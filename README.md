@@ -1,4 +1,4 @@
-# Fashion AI Hack for Myntra-WeforShe'24 by Team </CodeZen>
+# Fashion AI Hack for Myntra-WeforShe'24 by Team CodeZen
 
 To run this project locally on your device, follow these steps:
 
