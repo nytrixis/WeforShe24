@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import RelatedProducts from './RelatedProducts'
+import ChatBot from './ChatBot'
 
 const Hero = () => {
   return (
@@ -30,6 +31,7 @@ const Hero = () => {
       <div className="m-16">
         <RelatedProducts />
       </div>
+      <ChatBot/>
     </section>
   )
 }
