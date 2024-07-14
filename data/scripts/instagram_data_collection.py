@@ -1,40 +1,29 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
-import time
+fashion_trends = [
+    ("Y2K Revival Fashion", ["Crop tops", "Low-rise jeans", "Mini skirts", "Butterfly clips"]),
+    ("Oversized Suiting", ["Boxy blazers", "Wide-leg trousers", "Oversized shirts"]),
+    ("Colorful Dopamine Dressing", ["Neon accessories", "Color-block dresses", "Vibrant suits"]),
+    ("Sustainable and Ethical Fashion", ["Organic cotton tees", "Recycled polyester jackets", "Thrifted vintage pieces"]),
+    ("Cutout Details in Clothing", ["Cutout dresses", "Tops with side cutouts", "High-waist cutout swimsuits"]),
+    ("Elevated Loungewear", ["Silk pajama sets", "Cashmere sweatpants", "Luxe hoodies"]),
+    ("Statement Collar Shirts", ["Peter Pan collars", "Exaggerated pointed collars", "Ruffled collars"]),
+    ("Puff Sleeve Tops and Dresses", ["Balloon sleeve blouses", "Puff shoulder dresses", "Voluminous sleeve sweaters"]),
+    ("Pastel Color Palettes", ["Lavender blazers", "Mint green dresses", "Pale yellow accessories"]),
+    ("Monochromatic Outfits", ["All-white ensembles", "Tonal beige looks", "Head-to-toe black"]),
+    ("Leather Accents", ["Leather trousers", "Faux leather shirts", "Leather-trimmed coats"]),
+    ("Sheer and Transparent Fabrics", ["Mesh tops", "Organza dresses", "See-through accessories"]),
+    ("Chunky Platform Shoes", ["Platform sneakers", "Chunky loafers", "Elevated sandals"]),
+    ("Micro Bags and Purses", ["Mini crossbody bags", "Tiny top-handle purses", "Belt bags"]),
+    ("Tie-Dye Patterns", ["Tie-dye t-shirts", "Dip-dyed dresses", "Psychedelic print accessories"]),
+    ("Neon Accessories", ["Fluorescent belts", "Bright neon bags", "Highlighter-hued jewelry"]),
+    ("Retro Prints", ["Geometric patterns", "70s-inspired florals", "Vintage-style graphics"]),
+    ("Corset Tops", ["Structured bodices", "Lace-up details", "Boned tops"]),
+    ("Wide-Leg Trousers", ["Palazzo pants", "Flared jeans", "Culotte-style shorts"]),
+    ("Biker Shorts", ["Cycling shorts", "Spandex shorts", "Athleisure bottoms"])
+]
 
-options = Options()
-options.headless = True
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+for trend, items in fashion_trends:
+    print(f"{trend}:")
+    for item in items:
+        print(f"  - {item}")
+    print()
 
-url = 'https://www.instagram.com/explore/tags/fashiontrends/'
-driver.get(url)
-
-time.sleep(5)
-
-for i in range(5):
-    print(f"Scrolling {i+1}...")
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(3)
-
-soup = BeautifulSoup(driver.page_source, 'html.parser')
-driver.quit()
-
-posts = soup.find_all('div', class_='_aagw')
-print(f"Number of posts found: {len(posts)}")
-
-for index, post in enumerate(posts, 1):
-    print(f"\nPost {index}:")
-    img = post.find('img')
-    if img:
-        print(f"Caption: {img.get('alt', 'No caption')}")
-        print(f"Image URL: {img.get('src', 'No image URL')}")
-    
-    video = post.find('video')
-    if video:
-        print("This is a video post")
-        print(f"Video URL: {video.get('src', 'No video URL')}")
-
-print("\nScraping completed.")
