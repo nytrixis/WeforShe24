@@ -5,13 +5,10 @@ url = 'https://www.elle.com/fashion/trend-reports/'
 
 # Make a GET request to fetch the raw HTML content
 response = requests.get(url)
-print(f"Status code: {response.status_code}")
-print(f"Content length: {len(response.content)}")
 
 # Parse the HTML content using BeautifulSoup
 soup = BeautifulSoup(response.content, 'html.parser')
 items = soup.find_all('div', class_=lambda x: x and x.startswith('css'))
-print(f"Number of items found: {len(items)}")
 
 # Extract trends (example: titles of the trend articles)
 trends = []
