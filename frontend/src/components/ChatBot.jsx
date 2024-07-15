@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaCommentDots, FaArrowRight } from 'react-icons/fa'; // Import FaArrowRight for the arrow icon
+import { FaCommentDots, FaArrowRight } from 'react-icons/fa';
+import axios from 'axios';
 
 const ChatBot = () => {
   const [showChat, setShowChat] = useState(false);
@@ -7,6 +8,11 @@ const ChatBot = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
   const chatContainerRef = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const toggleChat = () => {
     setShowChat(!showChat);
@@ -22,29 +28,27 @@ const ChatBot = () => {
     }
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (userInput.trim() !== '') {
       const newMessage = { sender: 'user', message: userInput };
       setChatMessages([...chatMessages, newMessage]);
       setUserInput('');
       setIsThinking(true);
 
-      // Simulate bot response after a delay
-      setTimeout(() => {
-        const botResponse = getBotResponse(userInput);
-        const updatedMessage = { sender: 'bot', message: botResponse };
-        setChatMessages((prevMessages) => [...prevMessages, updatedMessage]);
+      try {
+        const response = await axios.post('http://localhost:4000/api/chatbot', { message: userInput });
+        const botResponse = { sender: 'bot', message: response.data.response };
+        setChatMessages((prevMessages) => [...prevMessages, botResponse]);
+      } catch (error) {
+        console.error('Error getting chatbot response:', error);
+        const errorMessage = { sender: 'bot', message: 'Sorry, I encountered an error. Please try again.' };
+        setChatMessages((prevMessages) => [...prevMessages, errorMessage]);
+      } finally {
         setIsThinking(false);
-      }, 1000); // Simulate a shorter delay for responsiveness
+      }
     }
   };
 
-  const getBotResponse = (userMessage) => {
-    // Replace this with your AI bot logic to generate a response
-    return 'This is a sample response from the AI bot.';
-  };
-
-  // Scroll to bottom of chat on chatMessages update
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -61,11 +65,11 @@ const ChatBot = () => {
       </div>
       {showChat && (
         <div className="bg-white rounded-lg shadow-lg p-4 mt-2 w-80">
-          <h3 className="text-lg font-bold mb-2">Glitzie</h3> {/* Update the name here */}
+          <h3 className="text-lg font-bold mb-2">Glitzie</h3>
           <div
             ref={chatContainerRef}
             className="max-h-64 overflow-y-auto mb-4"
-            style={{ maxHeight: '300px', overflowY: 'hidden' }} // Hide scrollbar
+            style={{ maxHeight: '400px'}}
           >
             {chatMessages.map((message, index) => (
               <div key={index} className="mb-2">
@@ -74,7 +78,7 @@ const ChatBot = () => {
                     message.sender === 'user' ? 'text-right' : 'text-left'
                   }`}
                 >
-                  {message.sender === 'user' ? 'You' : 'Glitzie'} {/* Update the name here */}
+                  {message.sender === 'user' ? 'You' : 'Glitzie'}
                 </div>
                 <div
                   className={`${
@@ -95,9 +99,9 @@ const ChatBot = () => {
             ))}
             {isThinking && (
               <div className="text-left">
-                <div className="text-sm mb-1 opacity-50">Glitzie</div> {/* Update the name here */}
+                <div className="text-sm mb-1 opacity-50">Glitzie</div>
                 <span className="inline-block px-2 py-1 rounded-lg bg-gray-200 text-gray-800 opacity-50">
-                  Glittering... {/* Update the text here */}
+                  Glittering...
                 </span>
               </div>
             )}
@@ -115,7 +119,7 @@ const ChatBot = () => {
               onClick={sendMessage}
               className="bg-blue-500 text-white rounded-r-lg py-2 px-4 ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <FaArrowRight /> {/* Arrow icon for Send button */}
+              <FaArrowRight />
             </button>
           </div>
         </div>

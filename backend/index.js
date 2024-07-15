@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const { spawn } = require('child_process');
 require('dotenv').config();
 
 app.use(express.json());
@@ -258,6 +259,35 @@ app.post('/getcart', fetchUser, async(req, res) => {
   let userData = await User.findOne({_id:req.user.id});
   res.json(userData.cartData);
 })
+
+app.post('/api/chatbot', (req, res) => {
+  const userInput = req.body.message;
+  const pythonProcess = spawn('python', ['../data/scripts/chatbot.py', userInput]);
+
+  let chatbotResponse = '';
+
+  pythonProcess.stdout.on('data', (data) => {
+    chatbotResponse += data.toString();
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error(`Error from Python script: ${data}`);
+  });
+
+  pythonProcess.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`Python script exited with code ${code}`);
+      return res.status(500).json({ error: 'Python script exited with error' });
+    }
+    res.json({ response: chatbotResponse.trim() });
+  });
+
+  pythonProcess.on('error', (err) => {
+    console.error(`Failed to start subprocess: ${err}`);
+    res.status(500).json({ error: 'Failed to start Python subprocess' });
+  });
+});
+
 
 app.listen(port, (error) => {
   if(!error){

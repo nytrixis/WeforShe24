@@ -23,13 +23,12 @@ const Item = ({ id, name, image, old_price, new_price }) => {
       <div className='flex flex-col gap-y-3 pt-24'>
         <h4 className='line-clamp-2 medium-16'>{name}</h4>
         <p>
-          Odit quisquam mollitia nisi. Vel voluptate nisi maxime
-          modi aut voluptatum ad.
+          Dive headfirst into the best shopping collections of today!
         </p>
         <div className='flexBetween'>
           <div className='flex gap-x-4 medium-16'>
-            <span>${new_price}.00</span>
-            <span className='line-through text-secondary'>${old_price}.00</span>
+            <span>Rs. {new_price}.00</span>
+            <span className='line-through text-secondary'>Rs. {old_price}.00</span>
           </div>
           <RiShoppingCart2Line className='p-2 h-10 w-10 hover:text-secondary'/>
         </div>
