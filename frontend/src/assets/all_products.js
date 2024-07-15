@@ -34,6 +34,7 @@ import p33_img from "./product_33.png";
 import p34_img from "./product_34.png";
 import p35_img from "./product_35.png";
 import p36_img from "./product_36.png";
+import p_15 from "./15.jpg";
 
 let all_products = [
   {
@@ -321,6 +322,15 @@ let all_products = [
     name: "Boys Orange Colourblocked Hooded Sweatshirt",
     category: "cosmetics",
     image: p36_img,
+    new_price: 85,
+    old_price: 120,
+  },
+
+  {
+    id: 37,
+    name: "Light Green Half Sleeves Shirt",
+    category: "clothing",
+    image: p_15,
     new_price: 85,
     old_price: 120,
   },

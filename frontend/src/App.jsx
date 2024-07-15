@@ -10,6 +10,8 @@ import clothingBanner from "./assets/clothingbanner.png"
 import Cart from "./pages/Cart"
 import Login from "./pages/Login"
 
+import TryOnPage from './components/TryOnPage';
+
 
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
           </Route>
           <Route path="/cart-page" element={<Cart />} /> 
           <Route path="/login" element={<Login />} /> 
+          <Route path="/try-on/1" element={<TryOnPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

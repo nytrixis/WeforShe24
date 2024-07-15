@@ -1,3 +1,7 @@
+import json
+import os
+
+# Existing data in JSON format
 fashion_trends = [
     ("Y2K Revival Fashion", ["Crop tops", "Low-rise jeans", "Mini skirts", "Butterfly clips"]),
     ("Oversized Suiting", ["Boxy blazers", "Wide-leg trousers", "Oversized shirts"]),
@@ -21,9 +25,34 @@ fashion_trends = [
     ("Biker Shorts", ["Cycling shorts", "Spandex shorts", "Athleisure bottoms"])
 ]
 
-for trend, items in fashion_trends:
-    print(f"{trend}:")
-    for item in items:
-        print(f"  - {item}")
-    print()
+# Function to append new trends to an existing JSON file, avoiding duplicates
+def append_to_json(new_trends):
+    output_file = 'trends.json'
 
+    # Check if JSON file already exists
+    if os.path.exists(output_file):
+        # Read existing JSON data
+        with open(output_file, 'r') as f:
+            existing_data = json.load(f)
+    else:
+        existing_data = []
+
+    # Convert existing_data to a set for faster lookup
+    existing_trends = set(existing_data)
+
+    # Combine existing data with new data, avoiding duplicates
+    combined_data = list(existing_trends.union(new_trends))
+
+    # Write combined data back to the file
+    with open(output_file, 'w') as f:
+        json.dump(combined_data, f, indent=4)
+
+# Prepare new trends set from fashion_trends list
+new_trends = set()
+for trend, items in fashion_trends:
+    for item in items:
+        cleaned_text = item.strip()
+        new_trends.add(cleaned_text)
+
+# Append new trends to JSON file
+append_to_json(new_trends)
