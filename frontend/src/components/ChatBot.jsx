@@ -106,7 +106,7 @@ const ChatBot = () => {
               </div>
             )}
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             <input
               type="text"
               value={userInput}
@@ -115,6 +115,14 @@ const ChatBot = () => {
               placeholder="Type your message..."
               className="flex-grow border border-gray-300 rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button
+              onClick={() => alert ("Mic on, listneing...")}
+              className='bg-white border border-gray-300 text-blue-500 rounded-none p-2 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+            </button>
             <button
               onClick={sendMessage}
               className="bg-blue-500 text-white rounded-r-lg py-2 px-4 ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
